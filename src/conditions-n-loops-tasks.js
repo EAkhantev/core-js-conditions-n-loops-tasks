@@ -66,8 +66,19 @@ function getMaxNumber(a, b, c) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  const positionQueenX = queen.x;
+  const positionQueenY = queen.y;
+  const positionKingX = king.x;
+  const positionKingY = king.y;
+
+  const verticalAttack = positionQueenX === positionKingX;
+  const horizontalAttack = positionQueenY === positionKingY;
+  const diagonallAttack =
+    Math.abs(positionQueenX - positionKingX) ===
+    Math.abs(positionQueenY - positionKingY);
+
+  return verticalAttack || horizontalAttack || diagonallAttack;
 }
 
 /**
@@ -116,22 +127,30 @@ function isIsoscelesTriangle(a, b, c) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
-  // let result = ''
-  // const romanSymbol = {
-  //   1: 'I',
-  //   4: 'IV',
-  //   5: 'V',
-  //   9: 'IV',
-  //   10: 'X'
-  // }
+function convertToRomanNumerals(num) {
+  let numberToCheck = num;
+  let result = '';
+  const romanSymbol = {
+    '+10': 'X',
+    '+9': 'IX',
+    '+5': 'V',
+    '+4': 'IV',
+    '+1': 'I',
+  };
+  const objKeys = Object.getOwnPropertyNames(romanSymbol);
 
-  // if (num > 10) {
+  for (let id = 0; id < objKeys.length; id += 1) {
+    if (numberToCheck === 0) return result;
+    const keyAsNumb = +objKeys[id];
+    const key = objKeys[id];
+    const value = romanSymbol[key];
+    while (numberToCheck >= keyAsNumb) {
+      result += value;
+      numberToCheck -= keyAsNumb;
+    }
+  }
 
-  // } else {
-  // }
-  // return String(num);
+  return result;
 }
 
 /**
@@ -149,8 +168,37 @@ function convertToRomanNumerals(/* num */) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let result = '';
+  const numberDict = {
+    '.': 'point',
+    ',': 'point',
+    '-': 'minus',
+    0: 'zero',
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+  };
+
+  for (let id = 0; id < numberStr.length; id += 1) {
+    const elm = numberStr[id];
+    const value = numberDict[elm];
+    switch (result) {
+      case '':
+        result = value;
+        break;
+      default:
+        result = `${result} ${value}`;
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -237,8 +285,24 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let sumLeft = 0;
+  let sumArray = 0;
+
+  for (let id = 0; id < arr.length; id += 1) {
+    const element = arr[id];
+    sumArray += element;
+  }
+
+  for (let id = 0; id < arr.length; id += 1) {
+    const currentElm = arr[id];
+    const middleElm = arr[id + 1];
+    sumLeft += currentElm;
+    sumArray -= currentElm;
+    const sumRight = sumArray - middleElm;
+    if (sumLeft === sumRight) return id + 1;
+  }
+  return -1;
 }
 
 /**
