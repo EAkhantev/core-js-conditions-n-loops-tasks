@@ -326,8 +326,50 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const arrayResult = [];
+  for (let rowID = 0; rowID < size; rowID += 1) {
+    const row = [];
+    for (let columnID = 0; columnID < size; columnID += 1) {
+      row[columnID] = 0;
+    }
+    arrayResult[rowID] = row;
+  }
+
+  const counterLimit = size ** 2;
+  let counter = 0;
+  let startRow = 0;
+  let endRow = arrayResult.length - 1;
+  let startColumn = 0;
+  let endColumn = arrayResult[0].length - 1;
+
+  while (counter < counterLimit) {
+    for (let col = startColumn; col <= endColumn; col += 1) {
+      counter += 1;
+      arrayResult[startRow][col] = counter;
+    }
+    startRow += 1;
+
+    for (let row = startRow; row <= endRow; row += 1) {
+      counter += 1;
+      arrayResult[row][endColumn] = counter;
+    }
+    endColumn -= 1;
+
+    for (let col = endColumn; col >= startColumn; col -= 1) {
+      counter += 1;
+      arrayResult[endRow][col] = counter;
+    }
+    endRow -= 1;
+
+    for (let row = endRow; row >= startRow; row -= 1) {
+      counter += 1;
+      arrayResult[row][startColumn] = counter;
+    }
+    startColumn += 1;
+  }
+
+  return arrayResult;
 }
 
 /**
@@ -345,8 +387,28 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const totalRows = matrix.length;
+  const totalColumns = matrix[0].length;
+  const resultMatrix = matrix;
+  const rotatedMatrix = [];
+
+  for (let rowID = 0; rowID < totalRows; rowID += 1) {
+    const row = [];
+    for (let columnID = 0; columnID < totalColumns; columnID += 1) {
+      row[columnID] = matrix[rowID][columnID];
+    }
+    rotatedMatrix[rowID] = row;
+  }
+
+  for (let rowID = 0; rowID < totalRows; rowID += 1) {
+    for (let columnID = 0; columnID < totalColumns; columnID += 1) {
+      resultMatrix[columnID][totalRows - 1 - rowID] =
+        rotatedMatrix[rowID][columnID];
+    }
+  }
+
+  return resultMatrix;
 }
 
 /**
